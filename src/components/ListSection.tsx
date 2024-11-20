@@ -14,6 +14,7 @@ interface Props {
 export default function ListSection({ items, type, title }: Props) {
   const { isDesktop, isTablet } = useResponsive();
   const renderCard = (data: Artist | AlbumOrPlaylist | Album) => {
+    if (!data) return null;
     switch (type) {
       case "artist":
         return <ArtistCard artist={data as Artist} />;
