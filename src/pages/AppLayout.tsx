@@ -68,7 +68,6 @@ export default function AppLayout() {
     syncUser();
   }, []);
 
-  const showSearchResults = search.trim().length > 3;
   return (
     <>
       <Appbar />
@@ -83,7 +82,7 @@ export default function AppLayout() {
           bgcolor="black"
           color="white"
         >
-          {showSearchResults ? (
+          {search.trim().length > 0 ? (
             <SearchResults search={debouncedSearch} />
           ) : (
             <Outlet />

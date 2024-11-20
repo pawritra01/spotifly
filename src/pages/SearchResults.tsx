@@ -15,7 +15,7 @@ export default function SearchResults({ search }: { search: string }) {
   });
 
   useEffect(() => {
-    if (search.trim().length < 3) return;
+    if (search.trim().length <= 0) return;
 
     setIsLoading(true);
     searchApi()
