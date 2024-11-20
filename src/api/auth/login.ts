@@ -4,10 +4,10 @@ import {
   sha256,
 } from "../../utils/authUtils";
 
-const clientId = import.meta.env.REACT_APP_SPOTIFY_CLIENT_ID;
-const redirectUri = import.meta.env.REACT_APP_SPOTIFY_CLIENT_ID;
+const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+const redirectUri = import.meta.env.VITE_SPOTIFY_REDIRECT_URI;
 
-const scope = import.meta.env.REACT_APP_SPOTIFY_SCOPE;
+const scope = import.meta.env.VITE_SPOTIFY_SCOPE;
 const authUrl = new URL("https://accounts.spotify.com/authorize");
 const tokenEndpoint = "https://accounts.spotify.com/api/token";
 
