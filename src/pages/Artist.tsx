@@ -1,21 +1,13 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import artistsApi from "../api/artistsApi";
 import { Track } from "../types/Track";
 import { Artist as IArtist } from "../types/Artist";
 import { Album } from "../types/Album";
-import {
-  Avatar,
-  Box,
-  List,
-  ListItem,
-  ListItemButton,
-  Typography,
-} from "@mui/material";
+import { Box } from "@mui/material";
 import ListSection from "../components/ListSection";
 import FullPageLoader from "../components/FullPageLoader";
 import PageHeader from "../components/layout/PageHeader";
-import { convertMsToMinutes } from "../utils/timeUtils";
 import TrackList from "../components/TrackList";
 
 export default function Artist() {
