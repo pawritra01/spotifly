@@ -161,7 +161,7 @@ export default function BottomBar() {
               >
                 {currentSong.name}
               </Typography>
-              <Box component="div">
+              <Box component="div" overflow="hidden">
                 {currentSong.artists.map((artist) => (
                   <Typography
                     key={artist.name}

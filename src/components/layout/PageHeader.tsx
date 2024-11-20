@@ -1,7 +1,7 @@
 import { PlayCircleFilled } from "@mui/icons-material";
 import { Avatar, Box, IconButton, Typography } from "@mui/material";
 import { useAppSelector } from "../../store/store";
-import { api } from "../../api/api";
+import playerApi from "../../api/playerApi";
 
 interface Props {
   name: string;
@@ -13,13 +13,8 @@ export default function PageHeader({ name, image, uri, author }: Props) {
   const deviceId = useAppSelector((state) => state.app.deviceId);
 
   const play = () => {
-    api(`/me/player/play?device_id=${deviceId}`, {
-      method: "PUT",
-      body: JSON.stringify({
-        context_uri: uri,
-        position_ms: 0,
-      }),
-    });
+    if (!deviceId) return;
+    playerApi(deviceId).play("playlist", uri);
   };
 
   return (

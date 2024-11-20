@@ -1,7 +1,6 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { api } from "../api/api";
-import useQuery from "../hooks/useQuery";
 import { Box } from "@mui/material";
 import { AlbumOrPlaylist } from "../types/AlbumOrPlaylist";
 import TrackList from "../components/playlist/TrackList";
@@ -9,18 +8,20 @@ import FullPageLoader from "../components/FullPageLoader";
 import PageHeader from "../components/layout/PageHeader";
 
 export default function AlbumPlaylist() {
+  const [data, setData] = useState<AlbumOrPlaylist>();
   const params = useParams();
 
   if (!params.id || !params.type) return;
 
-  const queryFn = useCallback(() => {
-    return api(`/${params.type}/${params.id}`);
-  }, [params.type, params.id]);
-  const { data, refetch } = useQuery<AlbumOrPlaylist>({ queryFn });
+  const getData = useCallback(() => {
+    api(`/${params.type}/${params.id}`).then((data) => {
+      setData(data);
+    });
+  }, [params]);
 
   useEffect(() => {
-    refetch();
-  }, [params]);
+    getData();
+  }, [getData]);
 
   if (!data) return <FullPageLoader />;
 

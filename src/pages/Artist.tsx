@@ -16,6 +16,7 @@ import ListSection from "../components/ListSection";
 import FullPageLoader from "../components/FullPageLoader";
 import PageHeader from "../components/layout/PageHeader";
 import { convertMsToMinutes } from "../utils/timeUtils";
+import TrackList from "../components/TrackList";
 
 export default function Artist() {
   const params = useParams();
@@ -50,22 +51,7 @@ export default function Artist() {
         author={`${artist.followers.total} followers`}
       />
 
-      <List>
-        {topTracks.map((item, index) => {
-          return (
-            <ListItemButton key={item.id}>
-              <Typography sx={{ paddingRight: 2 }} fontSize={14}>
-                {index + 1}
-              </Typography>
-              <Typography sx={{ flex: 1 }}>{item.name}</Typography>
-              <Typography sx={{ flex: 1 }}>{item.album.name}</Typography>
-              <Typography sx={{ flex: 1 }}>
-                {convertMsToMinutes(item.duration_ms)}
-              </Typography>
-            </ListItemButton>
-          );
-        })}
-      </List>
+      <TrackList items={topTracks} />
 
       <ListSection items={albums} type="album" title="Albums" />
       <ListSection

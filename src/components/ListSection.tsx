@@ -40,7 +40,7 @@ export default function ListSection({ items, type, title }: Props) {
     }
   };
 
-  const minWidth = isDesktop ? "250px" : isTablet ? "150px" : "100px";
+  const minWidth = isDesktop ? "200px" : isTablet ? "150px" : "100px";
   return (
     <Box sx={{ marginY: 4 }}>
       {title && (
@@ -49,7 +49,14 @@ export default function ListSection({ items, type, title }: Props) {
         </Typography>
       )}
 
-      <Box sx={{ display: "flex", overflow: "auto hidden", gap: 4 }}>
+      <Box
+        sx={{
+          display: "flex",
+          overflow: "auto hidden",
+          gap: 4,
+          paddingBottom: "8px",
+        }}
+      >
         {items.map((item) => (
           <Box sx={{ minWidth }}>{renderCard(item)}</Box>
         ))}

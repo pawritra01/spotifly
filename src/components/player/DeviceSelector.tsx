@@ -6,14 +6,13 @@ import {
   Popper,
   Typography,
 } from "@mui/material";
-import React, { useEffect } from "react";
-import { api } from "../../api/api";
-import useQuery from "../../hooks/useQuery";
-
-const queryFn = () => api("/me/player/devices");
+import React, { useCallback, useEffect, useState } from "react";
+import { type Device } from "../../types/Device";
+import deviceApi from "../../api/deviceApi";
 
 const SELECTOR_ID = "device_selector_button";
 export default function DeviceSelector() {
+  const [devices, setDevices] = useState<Device[]>([]);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -23,18 +22,22 @@ export default function DeviceSelector() {
   const open = Boolean(anchorEl);
   const id = open ? SELECTOR_ID : undefined;
 
-  const { data, refetch } = useQuery({ queryFn });
-  useEffect(() => {
-    if (open) refetch();
+  const syncDevices = useCallback(() => {
+    deviceApi()
+      .getDevices()
+      .then((data) => {
+        setDevices(data.devices);
+      });
   }, []);
 
+  useEffect(() => {
+    if (open) {
+      syncDevices();
+    }
+  }, [open, syncDevices]);
+
   const onSelectDevice = (deviceId: string) => {
-    api("/me/player", {
-      method: "PUT",
-      body: JSON.stringify({
-        device_ids: [deviceId],
-      }),
-    }).then(refetch);
+    deviceApi().transferDevice(deviceId).then(syncDevices);
   };
 
   return (
@@ -53,7 +56,7 @@ export default function DeviceSelector() {
           <Typography color="white" variant="subtitle1">
             Connected Devices
           </Typography>
-          {data?.devices.map((item) => (
+          {devices.map((item) => (
             <Device
               key={item.id}
               id={item.id}

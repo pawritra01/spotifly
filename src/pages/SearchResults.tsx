@@ -1,8 +1,9 @@
-import { Box, CircularProgress } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import searchApi from "../api/searchApi";
 import ListSection from "../components/ListSection";
 import FullPageLoader from "../components/FullPageLoader";
+import TrackList from "../components/TrackList";
 
 export default function SearchResults({ search }: { search: string }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -29,6 +30,8 @@ export default function SearchResults({ search }: { search: string }) {
   return (
     <Box>
       {/** Tracks */}
+      <Typography variant="h6">Tracks</Typography>
+      <TrackList items={searchResults.tracks.items.slice(10)} />
 
       {/** Artist */}
       <ListSection

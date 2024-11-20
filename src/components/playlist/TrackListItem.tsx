@@ -1,24 +1,15 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  ListItem,
-  ListItemButton,
-  Typography,
-  useMediaQuery,
-} from "@mui/material";
-import { AlbumTrackItem, PlaylistTrackItem } from "../../types/AlbumOrPlaylist";
+import { ListItemButton, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useAppSelector } from "../../store/store";
-import { api } from "../../api/api";
 import dayjs from "dayjs";
 import { convertMsToMinutes } from "../../utils/timeUtils";
-import { Fragment } from "react/jsx-runtime";
 import useResponsive from "../../hooks/useResponsive";
 import TrackItem from "./TrackItem";
+import { Track } from "../../types/Track";
+import playerApi from "../../api/playerApi";
 
 interface Props {
-  data: AlbumTrackItem | PlaylistTrackItem;
+  data: any;
   isPlaylist: boolean;
   index: number;
   distribution: string;
@@ -35,18 +26,13 @@ export default function TrackListItem({
   const deviceId = useAppSelector((state) => state.app.deviceId);
 
   const musicItem = {
-    ...(data as AlbumTrackItem),
-    ...(data as PlaylistTrackItem).track,
-  };
+    ...data,
+    ...data.track,
+  } as Track & { added_at: string };
 
   const play = () => {
-    api(`/me/player/play?device_id=${deviceId}`, {
-      method: "PUT",
-      body: JSON.stringify({
-        uris: [musicItem.uri],
-        position_ms: 0,
-      }),
-    });
+    if (!deviceId) return;
+    playerApi(deviceId).play("track", musicItem.uri);
   };
 
   return (
