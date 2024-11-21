@@ -17,26 +17,27 @@ export const api = async (
     });
 
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({})); // Fallback if JSON parsing fails
+      const errorData = await response.json().catch(() => ({})); 
       const error = new Error(
         errorData.message || `Request failed with status ${response.status}`
       );
+
       error.status = response.status;
       error.data = errorData;
       throw error;
     }
 
-    if (response.status === 200) {
-      return await response.json();
+    if (response.status === 204) {
+      return Promise.resolve();
     }
 
-    return response;
+    return await response.json();
   } catch (err) {
     if (!err.status) {
       console.error("Network error:", err.message);
       throw new Error("Network error occurred. Please try again.");
     }
 
-    throw err; // Re-throw known API errors for the caller to handle
+    throw err; 
   }
 };

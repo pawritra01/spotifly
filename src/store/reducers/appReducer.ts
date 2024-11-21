@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { fetchUserProfile } from "../actions/appActions";
 
 export interface AppState {
   sidebarExpanded: boolean;
@@ -43,6 +44,11 @@ export const appSlice = createSlice({
       return initialState;
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(fetchUserProfile.fulfilled, (state, { payload }) => {
+      state.user = payload;
+    })
+  }
 });
 
 export const {

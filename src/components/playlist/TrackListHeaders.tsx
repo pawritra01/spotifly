@@ -1,12 +1,18 @@
-import { Box, Typography } from "@mui/material";
+import { Box, styled, Typography } from "@mui/material";
 import useResponsive from "../../hooks/useResponsive";
+
+const Title = styled(Typography)(({ theme }) => ({
+  fontSize: 12,
+  color: theme.palette.secondary.dark,
+  fontWeight: 600,
+}));
 
 interface Props {
   isPlaylist: boolean;
   distribution: string;
 }
 export default function TaskListHeader({ isPlaylist, distribution }: Props) {
-  const { isDesktop, isMobile, isTablet } = useResponsive();
+  const { isUpDesktop: isDesktop, isMobile, isTablet } = useResponsive();
 
   return (
     <Box
@@ -16,36 +22,13 @@ export default function TaskListHeader({ isPlaylist, distribution }: Props) {
       gap={2}
       borderBottom="1px solid gray"
     >
-      <Typography fontSize={12} color="textDisabled" fontWeight={700}>
-        #
-      </Typography>
+      <Title>#</Title>
+      <Title>Title</Title>
 
-      <Typography fontSize={11} noWrap color="textSecondary" fontWeight={600}>
-        Title
-      </Typography>
+      {isPlaylist && isTablet && <Title>Album</Title>}
+      {isPlaylist && isDesktop && <Title>Added At</Title>}
 
-      {isPlaylist && isTablet && (
-        <Typography fontSize={12} noWrap color="textSecondary" fontWeight={600}>
-          Album
-        </Typography>
-      )}
-      {isPlaylist && isDesktop && (
-        <Typography
-          textOverflow="ellipsis"
-          fontSize={12}
-          noWrap
-          fontWeight={600}
-          color="textSecondary"
-        >
-          Added At
-        </Typography>
-      )}
-
-      {isMobile && (
-        <Typography fontSize={12} color="textSecondary" fontWeight={600}>
-          Duration
-        </Typography>
-      )}
+      {isMobile && <Title>Duration</Title>}
     </Box>
   );
 }

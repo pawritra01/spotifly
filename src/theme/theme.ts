@@ -15,6 +15,9 @@ const darkTheme = createTheme({
       dark: "#ba000d",
       contrastText: "#000",
     },
+    background: {
+      default: "#3d3d3d",
+    },
   },
 });
 

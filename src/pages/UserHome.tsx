@@ -43,7 +43,7 @@ interface Props {
   name: string;
 }
 function RecentPlaylistCard({ image, name, id }: Props) {
-  const { isDesktop } = useResponsive();
+  const { isUpDesktop: isDesktop } = useResponsive();
 
   return (
     <Box

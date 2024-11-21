@@ -1,7 +1,12 @@
 import { AppBar, Avatar, Box, Button, Icon, Toolbar } from "@mui/material";
 import { redirectAuth } from "../../api/auth/login";
 import { useAppSelector } from "../../store/store";
-import { Home } from "@mui/icons-material";
+import {
+  Home,
+  HomeMaxRounded,
+  HomeRounded,
+  HomeTwoTone,
+} from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import SearchBar from "../SearchBar";
 
@@ -11,10 +16,7 @@ export default function Appbar() {
   return (
     <AppBar position="relative">
       <Toolbar sx={{ justifyContent: "space-between" }}>
-        <Icon component={Link} to={{ pathname: "/" }}>
-          <Home />
-        </Icon>
-
+        <Box />
         <Box
           width="50%"
           minWidth="250px"
@@ -22,6 +24,17 @@ export default function Appbar() {
           display="flex"
           alignItems="center"
         >
+          <Icon
+            component={Link}
+            to={{ pathname: "/" }}
+            sx={{
+              background: ({ palette }) => palette.background.default,
+              borderRadius: "100%",
+              p: 1,
+            }}
+          >
+            <HomeRounded />
+          </Icon>
           <SearchBar />
         </Box>
 

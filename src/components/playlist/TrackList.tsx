@@ -12,7 +12,7 @@ interface Props {
 export default function TrackList({ data }: Props) {
   if (!data) return;
 
-  const { isDesktop, isTablet, isMobile } = useResponsive();
+  const { isUpDesktop: isDesktop, isTablet, isMobile } = useResponsive();
   const distribution = useMemo(() => {
     if (data.type === "album") {
       if (isMobile) {
