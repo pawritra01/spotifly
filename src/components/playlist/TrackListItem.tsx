@@ -8,22 +8,12 @@ import TrackItem from "./TrackItem";
 import { Track } from "../../types/Track";
 import playerApi from "../../api/playerApi";
 
-const Value = styled(Typography)(({ theme }) => ({
+const Value = styled(Typography)(() => ({
   textOverflow: "ellipsis",
   fontSize: 12,
   textWrap: "nowrap",
   color: "textSecondary",
   overflow: "hidden",
-}));
-
-const LinkValue = styled(Link)(({ theme }) => ({
-  fontSize: 12,
-  textWrap: "nowrap",
-  color: "textSecondary",
-  overflow: "hidden",
-  textOverflow: "ellipsis",
-  whiteSpace: "nowrap",
-  width: "100%",
 }));
 
 interface Props {
@@ -54,8 +44,8 @@ export default function TrackListItem({
 
   return (
     <ListItemButton onClick={play}>
-      <Grid2 container sx={{ width: "100%" }}>
-        <Grid2 size={1}>
+      <Grid2 container spacing={3} sx={{ width: "100%" }}>
+        <Grid2>
           <Value>{index}</Value>
         </Grid2>
 
@@ -69,12 +59,13 @@ export default function TrackListItem({
 
         {isPlaylist && isTablet && (
           <Grid2 size={3}>
-            <LinkValue
+            <Value
+              component={Link}
               to={`/albums/${musicItem.album.id}`}
               onClick={(e) => e.stopPropagation()}
             >
               {musicItem.album.name}
-            </LinkValue>
+            </Value>
           </Grid2>
         )}
 
@@ -88,9 +79,7 @@ export default function TrackListItem({
 
         {isMobile && (
           <Grid2 size={2}>
-            <Value>
-              <Value>{convertMsToMinutes(musicItem.duration_ms)}</Value>
-            </Value>
+            <Value>{convertMsToMinutes(musicItem.duration_ms)}</Value>
           </Grid2>
         )}
       </Grid2>

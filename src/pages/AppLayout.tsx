@@ -4,10 +4,7 @@ import { Box } from "@mui/material";
 import BottomBar from "../components/layout/BottomBar";
 import Appbar from "../components/layout/Appbar";
 import { useAppDispatch, useAppSelector } from "../store/store";
-import {
-  clearSearch,
-  logoutUser,
-} from "../store/reducers/appReducer";
+import { clearSearch, logoutUser } from "../store/reducers/appReducer";
 import { updateToken } from "../api/auth/login";
 import {
   fetchUserFeaturedPlaylists,
@@ -34,30 +31,32 @@ export default function AppLayout() {
   useEffect(() => {
     let timer: number;
 
-    if(user) {
+    if (user) {
       timer = setInterval(() => {
         updateToken();
       }, 1000 * 60 * 30);
     }
 
     return () => {
-      if(timer) clearInterval(timer);
-    }
-  }, [user])
+      if (timer) clearInterval(timer);
+    };
+  }, [user]);
 
   useEffect(() => {
     const syncUser = () => {
-      updateToken().then(() => {
-        dispatch(fetchUserProfile());
-        dispatch(fetchUserPlaylists());
-        dispatch(fetchUserFeaturedPlaylists());
-      }).catch(() => {
-        dispatch(logoutUser());
-      })
-    }
+      updateToken()
+        .then(() => {
+          dispatch(fetchUserProfile());
+          dispatch(fetchUserPlaylists());
+          dispatch(fetchUserFeaturedPlaylists());
+        })
+        .catch(() => {
+          dispatch(logoutUser());
+        });
+    };
 
     syncUser();
-  }, [])
+  }, []);
 
   return (
     <>
