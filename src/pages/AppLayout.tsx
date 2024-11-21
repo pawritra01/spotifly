@@ -1,4 +1,4 @@
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Sidebar from "../components/layout/Sidebar";
 import { Box } from "@mui/material";
 import BottomBar from "../components/layout/BottomBar";
@@ -6,7 +6,6 @@ import Appbar from "../components/layout/Appbar";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import {
   clearSearch,
-  loginUser,
   logoutUser,
 } from "../store/reducers/appReducer";
 import { updateToken } from "../api/auth/login";
@@ -14,10 +13,10 @@ import {
   fetchUserFeaturedPlaylists,
   fetchUserPlaylists,
 } from "../store/actions/userActions";
-import { api } from "../api/api";
 import { useEffect } from "react";
 import SearchResults from "./SearchResults";
 import { useDebounce } from "../hooks/useDebounce";
+import { fetchUserProfile } from "../store/actions/appActions";
 
 export default function AppLayout() {
   const user = useAppSelector((state) => state.app.user);
@@ -26,8 +25,6 @@ export default function AppLayout() {
   const debouncedSearch = useDebounce(search, 400);
 
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-
   const location = useLocation();
 
   useEffect(() => {
@@ -35,38 +32,32 @@ export default function AppLayout() {
   }, [location]);
 
   useEffect(() => {
-    const syncUser = async () => {
-      const access_token = localStorage.getItem("access_token");
-      const refresh_token = localStorage.getItem("refresh_token");
+    let timer: number;
 
-      if (!access_token && !refresh_token) navigate("/logged_out");
+    if(user) {
+      timer = setInterval(() => {
+        updateToken();
+      }, 1000 * 60 * 30);
+    }
 
-      try {
-        const userData = await api("/me");
+    return () => {
+      if(timer) clearInterval(timer);
+    }
+  }, [user])
 
-        dispatch(loginUser(userData));
+  useEffect(() => {
+    const syncUser = () => {
+      updateToken().then(() => {
+        dispatch(fetchUserProfile());
         dispatch(fetchUserPlaylists());
         dispatch(fetchUserFeaturedPlaylists());
-      } catch (err) {
-        if (err.status === 401) {
-          try {
-            const response = await updateToken();
-            if (!response.ok()) return;
-
-            localStorage.setItem("access_token", response.access_token);
-            localStorage.setItem("refresh_token", response.refresh_token);
-
-            window.location.reload();
-          } catch (err) {
-            dispatch(logoutUser());
-            navigate("/logged_out");
-          }
-        }
-      }
-    };
+      }).catch(() => {
+        dispatch(logoutUser());
+      })
+    }
 
     syncUser();
-  }, []);
+  }, [])
 
   return (
     <>

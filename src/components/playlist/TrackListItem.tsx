@@ -1,4 +1,4 @@
-import { ListItemButton, Typography } from "@mui/material";
+import { Grid2, ListItemButton, styled, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useAppSelector } from "../../store/store";
 import dayjs from "dayjs";
@@ -7,6 +7,24 @@ import useResponsive from "../../hooks/useResponsive";
 import TrackItem from "./TrackItem";
 import { Track } from "../../types/Track";
 import playerApi from "../../api/playerApi";
+
+const Value = styled(Typography)(({ theme }) => ({
+  textOverflow: "ellipsis",
+  fontSize: 12,
+  textWrap: "nowrap",
+  color: "textSecondary",
+  overflow: "hidden",
+}));
+
+const LinkValue = styled(Link)(({ theme }) => ({
+  fontSize: 12,
+  textWrap: "nowrap",
+  color: "textSecondary",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap",
+  width: "100%",
+}));
 
 interface Props {
   data: any;
@@ -19,9 +37,8 @@ export default function TrackListItem({
   index,
   data,
   isPlaylist = false,
-  distribution,
 }: Props) {
-  const { isDesktop, isMobile, isTablet } = useResponsive();
+  const { isUpDesktop: isDesktop, isMobile, isTablet } = useResponsive();
 
   const deviceId = useAppSelector((state) => state.app.deviceId);
 
@@ -36,54 +53,47 @@ export default function TrackListItem({
   };
 
   return (
-    <ListItemButton
-      onClick={play}
-      sx={{
-        display: "grid",
-        gridTemplateColumns: distribution,
-        padding: 1,
-        gap: 2,
-      }}
-    >
-      <Typography fontSize={12} color="textSecondary">
-        {index}
-      </Typography>
+    <ListItemButton onClick={play}>
+      <Grid2 container sx={{ width: "100%" }}>
+        <Grid2 size={1}>
+          <Value>{index}</Value>
+        </Grid2>
 
-      <TrackItem
-        name={musicItem.name}
-        artists={musicItem.artists}
-        image={musicItem.images && musicItem.images[0].url}
-      />
+        <Grid2 size={4}>
+          <TrackItem
+            name={musicItem.name}
+            artists={musicItem.artists}
+            image={musicItem.images && musicItem.images[0].url}
+          />
+        </Grid2>
 
-      {isPlaylist && isTablet && (
-        <Typography
-          to={`/albums/${musicItem.album.id}`}
-          component={Link}
-          onClick={(e) => e.stopPropagation()}
-          fontSize={12}
-          noWrap
-          color="textSecondary"
-        >
-          {musicItem.album.name}
-        </Typography>
-      )}
+        {isPlaylist && isTablet && (
+          <Grid2 size={3}>
+            <LinkValue
+              to={`/albums/${musicItem.album.id}`}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {musicItem.album.name}
+            </LinkValue>
+          </Grid2>
+        )}
 
-      {isPlaylist && isDesktop && (
-        <Typography
-          textOverflow="ellipsis"
-          fontSize={12}
-          noWrap
-          color="textSecondary"
-        >
-          {dayjs(new Date(musicItem.added_at)).format("MMM DD, YYYY")}
-        </Typography>
-      )}
+        {isPlaylist && isDesktop && (
+          <Grid2 size={2}>
+            <Value>
+              {dayjs(new Date(musicItem.added_at)).format("MMM DD, YYYY")}
+            </Value>
+          </Grid2>
+        )}
 
-      {isMobile && (
-        <Typography fontSize={12} color="textSecondary">
-          {convertMsToMinutes(musicItem.duration_ms)}
-        </Typography>
-      )}
+        {isMobile && (
+          <Grid2 size={2}>
+            <Value>
+              <Value>{convertMsToMinutes(musicItem.duration_ms)}</Value>
+            </Value>
+          </Grid2>
+        )}
+      </Grid2>
     </ListItemButton>
   );
 }

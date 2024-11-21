@@ -20,3 +20,4 @@ export const fetchUserFeaturedPlaylists = createAsyncThunk(
     return response.playlists;
   }
 );
+

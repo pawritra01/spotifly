@@ -12,7 +12,7 @@ interface Props {
   type: "artist" | "album" | "playlist";
 }
 export default function ListSection({ items, type, title }: Props) {
-  const { isDesktop, isTablet } = useResponsive();
+  const { isUpDesktop: isDesktop, isTablet } = useResponsive();
   const renderCard = (data: Artist | AlbumOrPlaylist | Album) => {
     if (!data) return null;
     switch (type) {

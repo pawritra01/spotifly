@@ -57,6 +57,8 @@ export const getToken = async (code: string) => {
 export const updateToken = async () => {
   let refreshToken = localStorage.getItem("refresh_token") as string;
 
+  if(!refreshToken) return Promise.reject('Data not found.');
+
   const payload = {
     method: "POST",
     headers: {
@@ -71,6 +73,10 @@ export const updateToken = async () => {
 
   const body = await fetch(tokenEndpoint, payload);
   const response = await body.json();
+
+
+  localStorage.setItem("access_token", response.access_token);
+  localStorage.setItem("refresh_token", response.refresh_token);
 
   return response;
 };
