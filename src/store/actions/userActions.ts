@@ -3,20 +3,12 @@ import { api } from "../../api/api";
 
 export const fetchUserPlaylists = createAsyncThunk(
   "user/fetchUserPlaylists",
-  async (_, { fulfillWithValue }) => {
+  async (_) => {
     const response = await api("/me/playlists");
 
-    fulfillWithValue(response);
-    return response;
-  }
-);
-
-export const fetchUserFeaturedPlaylists = createAsyncThunk(
-  "user/fetchUserFeaturedPlaylists",
-  async (_, { fulfillWithValue }) => {
-    const response = await api("/browse/featured-playlists");
-
-    fulfillWithValue(response);
-    return response.playlists;
+    return {
+      ...response,
+      items: response.items.filter((item: unknown) => Boolean(item)),
+    };
   }
 );

@@ -1,20 +1,15 @@
 import { List, ListItemButton, Typography } from "@mui/material";
 import { Track } from "../types/Track";
 import { convertMsToMinutes } from "../utils/timeUtils";
-import { api } from "../api/api";
 import { useAppSelector } from "../store/store";
+import playerApi from "../api/playerApi";
 
 export default function TrackList({ items }: { items: Track[] }) {
   const deviceId = useAppSelector((state) => state.app.deviceId);
 
   const play = (uri: string) => {
-    api(`/me/player/play?device_id=${deviceId}`, {
-      method: "PUT",
-      body: JSON.stringify({
-        uris: [uri],
-        position_ms: 0,
-      }),
-    });
+    if(!deviceId) return;
+    playerApi(deviceId).play('track', uri);
   };
 
   return (

@@ -7,12 +7,13 @@ import DeviceSelector from "../player/DeviceSelector";
 import PlayerControls from "../player/PlayerControls";
 import useResponsive from "../../hooks/useResponsive";
 import { Track } from "../../types/Track";
+import { setCurrentTrack } from "../../store/reducers/playerReducer";
 
 export default function BottomBar() {
   const dispatch = useAppDispatch();
 
   const [player, setPlayer] = useState(undefined);
-  const [currentSong, setCurrentSong] = useState<Track>(undefined);
+  const [currentSong, setCurrentSong] = useState<Track>();
   const [playing, setPlaying] = useState(false);
   const [duration, setDuration] = useState(1000);
   const [position, setPosition] = useState(500);
@@ -53,6 +54,12 @@ export default function BottomBar() {
           paused,
         } = state;
 
+        if (paused) {
+          dispatch(setCurrentTrack(null));
+        } else {
+          dispatch(setCurrentTrack(current_track.uri));
+        }
+
         setPlaying(!paused);
         setPosition(position);
         setDuration(duration);
@@ -65,11 +72,13 @@ export default function BottomBar() {
     };
 
     return () => {
-      instance.removeListener("ready");
-      instance.removeListener("not_ready");
-      instance.disconnect();
+      if (instance) {
+        instance.removeListener("ready");
+        instance.removeListener("not_ready");
+        instance.disconnect();
 
-      setPlayer(undefined);
+        setPlayer(undefined);
+      }
     };
   }, []);
 
@@ -123,7 +132,7 @@ export default function BottomBar() {
     });
   }, [player, volume]);
 
-  const { isMaxDesktop } = useResponsive();
+  const { isDownDesktop } = useResponsive();
 
   return (
     <Box
@@ -180,8 +189,8 @@ export default function BottomBar() {
 
       <Box
         flex="1.5"
-        minWidth={isMaxDesktop ? "90%" : "auto"}
-        order={isMaxDesktop ? "2" : "0"}
+        minWidth={isDownDesktop ? "90%" : "auto"}
+        order={isDownDesktop ? "2" : "0"}
         paddingX={2}
       >
         <PlayerControls

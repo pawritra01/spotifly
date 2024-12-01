@@ -20,6 +20,7 @@ export default function Sidebar() {
 
   const shouldShowSidebar = expanded && matches;
 
+  console.log(items);
   return (
     <Box
       width={shouldShowSidebar ? 300 : "auto"}
@@ -54,34 +55,7 @@ export default function Sidebar() {
           <Link to={`/${type}s/${id}`} key={id}>
             <ListItemButton key={id}>
               {shouldShowSidebar ? (
-                <>
-                  <Typography
-                    maxWidth="75%"
-                    variant="body1"
-                    fontWeight={600}
-                    sx={{
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                      overflow: "hidden",
-                    }}
-                  >
-                    {name}
-                  </Typography>
-                  <Typography
-                    component="span"
-                    fontSize={12}
-                    maxWidth="25%"
-                    color="textSecondary"
-                    sx={{
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                      overflow: "hidden",
-                      marginLeft: 0.5,
-                    }}
-                  >
-                    . Playlist
-                  </Typography>
-                </>
+                <ListItem name={name} />
               ) : (
                 <Avatar
                   variant="rounded"
@@ -95,5 +69,37 @@ export default function Sidebar() {
         ))}
       </List>
     </Box>
+  );
+}
+
+function ListItem({ name }: { name: string }) {
+  return (
+    <Typography
+      maxWidth="75%"
+      variant="body1"
+      fontWeight={600}
+      sx={{
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+      }}
+    >
+      {name}
+
+      <Typography
+        component="span"
+        color="textSecondary"
+        sx={{
+          fontSize: 12,
+          maxWidth: "25%",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          marginLeft: 0.5,
+        }}
+      >
+        . Playlist
+      </Typography>
+    </Typography>
   );
 }
