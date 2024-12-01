@@ -20,6 +20,7 @@ export default function Sidebar() {
 
   const shouldShowSidebar = expanded && matches;
 
+  console.log(items);
   return (
     <Box
       width={shouldShowSidebar ? 300 : "auto"}

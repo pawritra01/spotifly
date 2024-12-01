@@ -1,8 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {
-  fetchUserFeaturedPlaylists,
-  fetchUserPlaylists,
-} from "../actions/userActions";
+import { fetchUserPlaylists } from "../actions/userActions";
 
 export interface UserState {
   playlists: {
@@ -54,10 +51,6 @@ export const userSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchUserPlaylists.fulfilled, (state, action) => {
       state.playlists = action.payload;
-    });
-
-    builder.addCase(fetchUserFeaturedPlaylists.fulfilled, (state, action) => {
-      state.featured = action.payload;
     });
   },
 });

@@ -2,12 +2,9 @@ import { Avatar, Box, Typography } from "@mui/material";
 import { useAppSelector } from "../store/store";
 import { Link } from "react-router-dom";
 import useResponsive from "../hooks/useResponsive";
-import ListSection from "../components/ListSection";
 
 export default function UserHome() {
-  const user = useAppSelector((state) => state.app.user);
   const playlists = useAppSelector((state) => state.user.playlists);
-  const featuredPlaylists = useAppSelector((state) => state.user.featured);
 
   return (
     <Box sx={{ marginY: 4 }}>
@@ -27,12 +24,6 @@ export default function UserHome() {
           />
         ))}
       </Box>
-
-      <ListSection
-        items={featuredPlaylists.items}
-        title={`Made for ${user?.display_name}`}
-        type="playlist"
-      />
     </Box>
   );
 }

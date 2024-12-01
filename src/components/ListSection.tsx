@@ -35,6 +35,7 @@ export default function ListSection({ items, type, title }: Props) {
               to={`/${type}s/${data.id}`}
               image={data.images[0]?.url}
               description=""
+              rounded={type === "artist"}
             />
           ) : null
         )}

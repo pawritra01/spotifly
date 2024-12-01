@@ -6,10 +6,7 @@ import Appbar from "../components/layout/Appbar";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { clearSearch, logoutUser } from "../store/reducers/appReducer";
 import { updateToken } from "../api/auth/login";
-import {
-  fetchUserFeaturedPlaylists,
-  fetchUserPlaylists,
-} from "../store/actions/userActions";
+import { fetchUserPlaylists } from "../store/actions/userActions";
 import { useEffect } from "react";
 import SearchResults from "./SearchResults";
 import { useDebounce } from "../hooks/useDebounce";
@@ -48,7 +45,6 @@ export default function AppLayout() {
         .then(() => {
           dispatch(fetchUserProfile());
           dispatch(fetchUserPlaylists());
-          dispatch(fetchUserFeaturedPlaylists());
         })
         .catch(() => {
           dispatch(logoutUser());

@@ -7,6 +7,7 @@ import DeviceSelector from "../player/DeviceSelector";
 import PlayerControls from "../player/PlayerControls";
 import useResponsive from "../../hooks/useResponsive";
 import { Track } from "../../types/Track";
+import { setCurrentTrack } from "../../store/reducers/playerReducer";
 
 export default function BottomBar() {
   const dispatch = useAppDispatch();
@@ -52,6 +53,12 @@ export default function BottomBar() {
           track_window: { current_track },
           paused,
         } = state;
+
+        if (paused) {
+          dispatch(setCurrentTrack(null));
+        } else {
+          dispatch(setCurrentTrack(current_track.uri));
+        }
 
         setPlaying(!paused);
         setPosition(position);

@@ -1,9 +1,8 @@
 import { Box, styled, Typography } from "@mui/material";
 import useResponsive from "../../hooks/useResponsive";
 
-const Title = styled(Typography)(({ theme }) => ({
+const Title = styled(Typography)(() => ({
   fontSize: 12,
-  color: theme.palette.secondary.dark,
   fontWeight: 600,
 }));
 
@@ -12,7 +11,7 @@ interface Props {
   distribution: string;
 }
 export default function TaskListHeader({ isPlaylist, distribution }: Props) {
-  const { isUpDesktop: isDesktop, isMobile, isTablet } = useResponsive();
+  const { isUpDesktop, isMobile, isTablet } = useResponsive();
 
   return (
     <Box
@@ -26,7 +25,7 @@ export default function TaskListHeader({ isPlaylist, distribution }: Props) {
       <Title>Title</Title>
 
       {isPlaylist && isTablet && <Title>Album</Title>}
-      {isPlaylist && isDesktop && <Title>Added At</Title>}
+      {isPlaylist && isUpDesktop && <Title>Added At</Title>}
 
       {isMobile && <Title>Duration</Title>}
     </Box>
